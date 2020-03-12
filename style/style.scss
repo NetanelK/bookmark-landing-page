@@ -1,0 +1,675 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik:400,500,700&display=swap');
+
+*{
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+    z-index: 0 !important;
+}
+
+$colors: ( 
+    primary: hsl(231, 69%, 60%),
+    grayish-blue: hsl(229, 8%, 60%),
+    dark-blue: hsl(229, 31%, 21%),
+    soft-red: hsl(0, 94%, 66%),
+    );
+
+@mixin desktop{
+    @media (min-width: 720px) {
+        @content;
+    }
+}
+
+@keyframes show{
+    from {opacity: 0;} to {opacity: 1;}
+}
+
+%button {
+    margin: 2.5em .5em;
+    padding: 1.25em 1.5em;
+    font-weight: 700;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba($color: #000000, $alpha: .1);
+    outline: none;
+    cursor: pointer;
+    transition: background-color 1.5s, color 1s, border .5s;
+}
+
+%background{
+    clip-path: inset(140px 65px 0 0 round 0 25% 25% 0);
+    background-color: map-get($map: $colors, $key: primary);
+    position: absolute;
+    top: -6em;
+    left: 0;
+    height: 335px;
+    width: 100%;
+    max-width: 400px;
+    z-index: -2 !important;
+}
+
+body{
+    font: 400 18px 'Rubik';
+}
+
+.header{
+    position: fixed;
+    top: 0;
+    padding: 1em;
+    background: white;
+    width: 100%;
+
+    #chk-btn{
+        display: none;
+
+        &:checked{
+            ~label{
+                content: url("../images/icon-close.svg");
+            }
+
+            ~svg{
+                .bookmark{
+                    fill: white;
+                }
+
+                circle {
+                    fill: white;
+                }
+        
+                .inside{
+                    fill: rgba(map-get($map: $colors, $key: dark-blue), .9);
+                }
+            }
+
+            ~.menu{
+                height: 100%;
+                background-color: rgba(map-get($map: $colors, $key: dark-blue), .9);
+                overflow-y: visible;
+            }
+        }
+    }
+
+    svg {
+        .bookmark{
+            fill: #242A45;
+        }
+
+        circle {
+            fill: map-get($map: $colors, $key: primary);
+        }
+
+        .inside{
+            fill: white;
+        }
+    }
+
+    label{
+        float: right;
+        content: url("../images/icon-hamburger.svg");
+        cursor: pointer;
+    }
+
+    .menu{
+        list-style-type: none;
+        clear: both;
+        height: 0;
+        width: 100%;
+        overflow: hidden;
+        text-align: center;
+        position: fixed;
+        left: 0;
+        top: 0;
+        padding-top: 4em;
+        z-index: -1 !important;
+        background-color: white;
+        transition: height .25s ease;
+
+        li::before {
+            content: '';
+            height: 1px;
+            width: 90%;
+            max-width: 375px;
+            background-color: map-get($map: $colors, $key: grayish-blue);
+            display: block;
+            margin: 0 auto .65em auto;
+        }
+        
+        a{
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            display: block;
+            padding: .5em 0 1em 0;
+            max-width: 375px;
+            margin: 0 auto;
+        }
+
+        .a-btn{
+            border: 2px solid white;
+            border-radius: 5px;
+            font-weight: 500;
+            padding: .5em;
+            width: 80%;
+            margin-top: 1em;
+        }
+
+        .header-social{
+            top: 50%;
+            position: relative;
+
+            img{
+                margin-left: 1.5em;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.intro{
+    margin-top: 7em;
+    .img-warp{
+        .background{ 
+            @extend %background;
+            
+            clip-path: inset(125px 0 0 65px round 25% 0 0 25%);
+            top: 3em;
+        }
+        
+        img{
+            display: block;
+            width: 100%;
+            max-width: 375px;
+            margin: 0 auto;
+
+        }
+    }
+    .content{
+        text-align: center;
+        margin: 0 auto;
+        padding: .5em;
+        max-width: 375px;
+        color: map-get($map: $colors, $key: grayish-blue);
+
+        h1{
+            color: map-get($map: $colors, $key: dark-blue);
+            font-weight: 500;
+            margin: 1em 0 .75em 0;
+        }
+
+        button{
+            @extend %button;
+
+            &.firefox{
+                background-color:rgba(map-get($map: $colors, $key: grayish-blue), .2);
+                color: map-get($colors, dark-blue);
+            }
+
+            &.chrome {
+                background-color: map-get($map: $colors, $key: primary);
+                color: #FFF;
+            }
+        }
+    }
+}
+
+.features{
+    text-align: center;
+    margin: 5em 0;
+    color: map-get($map: $colors, $key: grayish-blue);
+    >p{
+        font-size:  16px;
+        padding: 1em 1.5em;
+        line-height: 1.65;
+    }
+
+
+    input{
+        display: none;
+
+        &#bookmarking:checked{
+            ~.tab.t2, ~.tab.t3{
+                display: none;
+            }
+
+            ~.tab.t1{
+                display: block;
+            }
+
+            ~label[for="bookmarking"]{
+                color: map-get($map: $colors, $key: dark-blue);
+                font-weight: 500;
+
+                .label-checked{
+                    display: block;
+                }
+
+                &::after{
+                    margin-top: 0;
+                }
+            }
+        }
+
+        &#searching:checked{
+            ~.tab.t1, ~.tab.t3{
+                display: none;
+            }
+
+            ~.tab.t2{
+                display: block;
+            }
+
+            ~label[for="searching"] {
+                color: map-get($map: $colors, $key: dark-blue);
+                font-weight: 500;
+
+                .label-checked{
+                    display: block;
+                }
+            }
+            
+            ~label[for="sharing"]::before{
+                margin-top: 0;
+            }
+        }
+
+        &#sharing:checked{
+            ~.tab.t2, ~.tab.t1{
+                display: none;
+            }
+
+            ~.tab.t3{
+                display: block;
+            }
+
+            ~label[for="sharing"]{
+                color: map-get($map: $colors, $key: dark-blue);
+                font-weight: 500;
+
+                .label-checked{
+                    display: block;
+                }
+
+                &::after{
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
+    label{
+        display: block;
+        color: rgba(map-get($map: $colors, $key: dark-blue), .7);
+        cursor: pointer;
+        
+
+        &.label::after, &.label::before {
+            content: '';
+            display: block;
+            margin: 1em auto;
+            width: 90%;
+            height: 1px;
+            background-color: rgba(map-get($map: $colors, $key: grayish-blue), .3);
+        }
+    }
+
+    .label-checked{
+        display: none;
+        width: 125px;
+        height: 3px;
+        background-color: map-get($colors, soft-red);
+        margin: 1em auto 0 auto;
+    }
+
+    h3{
+        color: map-get($map: $colors, $key: dark-blue);
+    }
+
+    .tab{
+        animation-name: show;
+        animation-duration: 1.5s;
+
+        &.t2 .img-warp .background{
+            top: -4em;
+            clip-path: inset(140px 95px 0 0 round 0 25% 25% 0);
+        }
+
+        &.t3 .img-warp .background{
+            top: -3em;
+            clip-path: inset(140px 85px 0 0 round 0 25% 25% 0);
+        }
+
+        .img-warp{
+            position: relative;
+            margin: 3em 0;
+            z-index: -2 !important;
+
+            .background{
+                @extend %background;
+            }
+            
+            img{
+                width: 80%;
+            }
+        }
+
+        .content {
+            padding: 0 1.25em ;
+            margin: 0 auto;
+            max-width: 375px;
+            color: map-get($map: $colors, $key: grayish-blue);
+            font-size: 16px;
+            line-height: 1.65;
+
+            h3{
+                font-weight: 500;
+                margin-bottom: .5em;
+            }
+        }
+        
+    }
+
+    button{
+        @extend %button;
+
+        display: none;
+        padding: 1em 1.75em;
+        background-color: map-get($map: $colors, $key: primary);
+        color: #FFF;
+
+        @include desktop(){
+            display: block;
+        }
+    }
+}
+
+.download{
+    text-align: center;
+
+    h3{
+        color: map-get($map: $colors, $key: dark-blue);
+        font-weight: 500;
+        margin: .5em 0;
+    }
+
+    >p{
+        color: map-get($map: $colors, $key: grayish-blue);
+        font-size: 16px;
+        padding: 0 2em;
+        line-height: 1.65;
+        max-width: 375px;
+        margin: 0 auto;
+    }
+
+    .card{
+        box-shadow: 0 7px 15px rgba($color: map-get($colors, primary), $alpha: .1);
+        margin: 2em auto;
+        padding: 2em 0 1em 0;
+        border: none;
+        border-radius: 10px;
+        max-width: 265px;
+        position: relative;
+        z-index: -2 !important;
+
+        img{
+            width: 85px;
+        }
+
+        h4{
+            color: map-get($map: $colors, $key: dark-blue);
+            font-weight: 500;
+            margin: 1em 0 .15em 0;
+        }
+
+        span{
+            font-size: 13px;
+            color: map-get($map: $colors, $key: grayish-blue);
+
+            &::after{
+                content: "";
+                display: block;
+                height: 5px;
+                width: 100%;
+                background: url("../images/bg-dots.svg");
+                position: absolute;
+                left: 0;
+                bottom: 6em;
+            }
+        }
+
+        button{
+            @extend %button;
+
+            margin: 4em 0 0 0;
+            background-color: map-get($colors, primary);
+            color: #FFF;
+            font-weight: 500;
+            padding: 1em 2.5em;
+
+            
+        }
+    }
+}
+
+.questions{
+    padding: 1em 2em;
+    max-width: 375px;
+    margin: 0 auto;
+
+    h3{
+        color: hsl(229, 31%, 21%);
+        font-size: 1.35em;
+        text-align: center;
+        font-weight: 500;
+        margin-top: 3em;
+    }
+
+    >p{
+        color: map-get($map: $colors, $key: grayish-blue);
+        font-size: 15px;
+        text-align: center;
+        line-height: 1.65;
+        margin: 2em 0 4em 0;
+    }
+
+    input{
+        display: none;
+
+        &:checked{
+            +label{
+                svg{
+                    stroke: map-get($map: $colors, $key: soft-red);
+                    transform: rotate(180deg);
+                }
+
+                &::after{
+                    display: none;
+                }
+            }
+
+            ~p{
+                position: relative;
+                max-height:500px;
+                margin: 2em 0;
+            }
+        }
+    }
+        
+
+        
+    .q-wrap{
+        label{
+            display: block;
+            margin-top: .65em;
+            cursor: pointer;
+            font-size: 14px;
+            color: map-get($map: $colors, $key: dark-blue);
+            font-weight: 500;
+
+            svg{
+                stroke: map-get($map: $colors, $key: primary);
+                float: right;
+                margin: .35em 1em .35em 0;
+                transition: transform .3s ease;
+            }
+            
+            &::after{
+                content: '';
+                display: block;
+                width: 100%;
+                height: 1px;
+                background-color: rgba(map-get($map: $colors, $key: grayish-blue), .6);
+                margin: 1em 0;
+            }
+        }
+
+        p{
+            max-height: 0;
+            overflow: hidden;
+            line-height: 1.95;
+            padding-right: 1em;
+            color: map-get($map: $colors, $key: grayish-blue);
+            font-size: 14px;
+
+            transition: max-height .3s ease;
+        }
+    }
+
+    button{
+        @extend %button;
+
+        background-color: map-get($map: $colors, $key: primary);
+        color: white;
+        padding: 1.25em 1.75em;
+        display: block;
+        margin: 2em auto 6em auto;
+    }
+}
+
+.form{
+    background-color: hsl(231, 69%, 60%);
+    color: white;
+    text-align: center;
+    padding: 1em 2em;
+
+    strong{
+        letter-spacing: 5px;
+        font-weight: 400;
+        font-size: 10px;
+        text-transform: uppercase;
+        margin: 4em 0 1em 0;
+        display: block;
+    }
+
+    h3{
+        font-weight: 500;
+    }
+
+    .email-wrap{
+        position: relative;
+        width: 90%;
+        margin: 2em auto 0 auto;
+        padding: .1em ;
+        border: none;
+        border-radius: 5px;
+
+        p{
+            font-size: 10px;
+            font-style: italic;
+            text-align: left;
+            padding: .75em 0 .5em 1.5em;
+        }
+
+    }
+
+    #error-img{
+        display: none;
+        position: absolute;
+        top: .65em;
+        left: 88%;
+    }
+
+    #email{
+        width: 100%;
+        padding: 1em;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        color: map-get($map: $colors, $key: dark-blue);
+
+        &::placeholder{
+            color: rgba(map-get($map: $colors, $key: grayish-blue), .5);
+            font-size: 12px;
+        }
+    }
+
+    .button{
+        @extend %button;
+
+        background-color: map-get($map: $colors, $key: soft-red);
+        color: white;
+        width: 90%;
+        margin-top: 0;
+        padding: 1em;
+        
+
+        &:hover{
+            background-color: white;
+            color: map-get($map: $colors, $key: soft-red);
+            border: 1px solid map-get($map: $colors, $key: soft-red);
+        }
+    }
+}
+
+.footer{
+    background-color: map-get($map: $colors, $key: dark-blue);
+    text-align: center;
+    padding-top: 2em;
+
+    a{
+        display: block;
+        color: white;
+        text-transform: uppercase;
+        text-decoration: none;
+        font-weight: 400;
+        font-size: 14px;
+        letter-spacing: 1.5px;
+        transition: color .75s ease-out;
+        margin: 2.5em 3em;
+
+        &:hover{
+            color: map-get($colors , soft-red );
+        }
+    }
+
+    .social{
+
+        svg{
+            fill: white;
+            cursor: pointer;
+            transition: fill 1s ease;
+            margin: 1em 0 2em 0;
+
+            &:hover{
+                fill: hsl(0, 94%, 66%);
+            }
+
+            &.facebook{
+                margin-right: 1.5em;
+            }
+
+        }
+    }
+
+    .attribution { 
+        font-size: 11px; 
+        text-align: center; 
+        color: white;
+        
+        a { 
+        color: hsl(228, 45%, 44%); 
+        font-size: 11px; 
+        margin: 0; 
+        display: inline; 
+        text-transform: none;
+        }
+    }
+}
